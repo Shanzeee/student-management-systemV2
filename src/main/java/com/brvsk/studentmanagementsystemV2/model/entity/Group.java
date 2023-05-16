@@ -42,9 +42,11 @@ public class Group {
     )
     private List<Course> courses = new ArrayList<>();
 
+    @JsonIgnore
     @ManyToOne(
             cascade = CascadeType.REFRESH,
             fetch = FetchType.LAZY
     )
     private Department department;
+
 }

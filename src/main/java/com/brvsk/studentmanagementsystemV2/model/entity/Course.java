@@ -1,5 +1,6 @@
 package com.brvsk.studentmanagementsystemV2.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,6 +26,7 @@ public class Course {
     )
     private Long id;
 
+    @JsonIgnore
     @ManyToOne(
             cascade = {CascadeType.REFRESH,CascadeType.PERSIST,CascadeType.MERGE},
             fetch = FetchType.LAZY)

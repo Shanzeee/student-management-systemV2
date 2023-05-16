@@ -1,5 +1,6 @@
 package com.brvsk.studentmanagementsystemV2.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -53,6 +54,7 @@ public class Teacher {
     )
     private Gender gender;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "teacher")
     private Set<Course> courses = new HashSet<>();
 }

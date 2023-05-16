@@ -7,6 +7,5 @@ import java.util.List;
 
 public interface StudentRepository extends JpaRepository<Student, Long> {
     boolean existsByEmail(String email);
-    List<Student> findAllByGroup_GroupId(Long groupId);
     Student findByEmail(String email);
 }
