@@ -32,7 +32,7 @@ public class DepartmentService {
         departmentRepository.save(newDepartment);
     }
 
-    public List<DepartmentDto> getAllDepartments() {
+    public List<DepartmentDto> getAllDepartmentsWithGroups() {
         return departmentRepository
                 .findAll()
                 .stream()
@@ -40,6 +40,9 @@ public class DepartmentService {
                 .collect(Collectors.toList());
     }
 
+    public List<Department> getAllDepartments() {
+        return departmentRepository.findAll();
+    }
     private Department buildDepartment(DepartmentRequest departmentRequest){
         return Department.builder()
                 .name(departmentRequest.getName())

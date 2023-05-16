@@ -1,12 +1,13 @@
 package com.brvsk.studentmanagementsystemV2.controller;
 
+import com.brvsk.studentmanagementsystemV2.model.dto.StudentDto;
+import com.brvsk.studentmanagementsystemV2.model.dto.TeacherDto;
 import com.brvsk.studentmanagementsystemV2.model.entity.Teacher;
 import com.brvsk.studentmanagementsystemV2.service.TeacherService;
 import lombok.AllArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -19,5 +20,11 @@ public class TeacherController {
     @PostMapping
     public Teacher createNewTeacher(@RequestBody Teacher teacher){
         return teacherService.addTeacher(teacher);
+    }
+
+
+    @GetMapping
+    public List<TeacherDto> getAllTeachers(){
+        return teacherService.getAllTeachers();
     }
 }

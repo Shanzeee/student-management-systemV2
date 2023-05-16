@@ -1,5 +1,6 @@
 package com.brvsk.studentmanagementsystemV2.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -39,6 +40,7 @@ public class Department {
     )
     private String shortcut;
 
+    @JsonIgnore
     @OneToMany(
             mappedBy = "department",
             orphanRemoval = true,

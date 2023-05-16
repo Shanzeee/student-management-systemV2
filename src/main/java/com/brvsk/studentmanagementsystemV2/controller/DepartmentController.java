@@ -22,7 +22,7 @@ public class DepartmentController {
     private DepartmentService departmentService;
 
     @GetMapping
-    public List<DepartmentDto> getAllDepartments(){
+    public List<Department> getAllDepartments(){
         return departmentService.getAllDepartments();
     }
 
