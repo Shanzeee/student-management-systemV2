@@ -1,6 +1,7 @@
 package com.brvsk.studentmanagementsystemV2.controller;
 
 import com.brvsk.studentmanagementsystemV2.model.entity.Student;
+import com.brvsk.studentmanagementsystemV2.model.request.StudentRequest;
 import com.brvsk.studentmanagementsystemV2.service.StudentService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +17,7 @@ public class StudentController {
     private final StudentService studentService;
 
     @PostMapping
-    public Student createNewStudent(@RequestBody Student student){
-        return studentService.addStudent(student);
+    public void createNewStudent(@RequestBody StudentRequest studentRequest){
+        studentService.addStudent(studentRequest);
     }
 }

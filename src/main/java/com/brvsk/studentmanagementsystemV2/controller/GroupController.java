@@ -1,5 +1,6 @@
 package com.brvsk.studentmanagementsystemV2.controller;
 
+import com.brvsk.studentmanagementsystemV2.model.dto.GroupDto;
 import com.brvsk.studentmanagementsystemV2.model.entity.Group;
 import com.brvsk.studentmanagementsystemV2.model.request.GroupRequest;
 import com.brvsk.studentmanagementsystemV2.service.GroupService;
@@ -20,7 +21,7 @@ public class GroupController {
 
 
     @GetMapping
-    public List<Group> getAllGroups(){
+    public List<GroupDto> getAllGroups(){
         return groupService.getAllGroups();
     }
 
