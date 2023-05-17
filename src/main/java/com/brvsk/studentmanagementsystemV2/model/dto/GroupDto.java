@@ -13,6 +13,7 @@ public class GroupDto {
 
     private Long id;
     private String groupName;
+    private String departmentShortcut;
     private List<String> studentsLastName;
     private List<String> coursesName;
 }

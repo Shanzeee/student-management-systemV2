@@ -15,6 +15,11 @@ const columns = [
         title: 'group name',
         dataIndex: 'groupName',
         key: 'groupName',
+    },
+    {
+        title: 'department',
+        dataIndex: 'departmentShortcut',
+        key: 'departmentShortcut',
     }
 
 ];

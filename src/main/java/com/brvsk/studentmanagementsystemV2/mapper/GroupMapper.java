@@ -18,6 +18,7 @@ public class GroupMapper {
         return GroupDto.builder()
                 .id(group.getId())
                 .groupName(group.getGroupName())
+                .departmentShortcut(group.getDepartment().getShortcut())
                 .studentsLastName(getStudentsLastName(group))
                 .coursesName(getCoursesName(group))
                 .build();

@@ -4,6 +4,8 @@ import com.brvsk.studentmanagementsystemV2.exception.BadRequestException;
 import com.brvsk.studentmanagementsystemV2.exception.notFound.ExamNotFoundException;
 import com.brvsk.studentmanagementsystemV2.exception.notFound.NotFoundException;
 import com.brvsk.studentmanagementsystemV2.exception.notFound.StudentNotFoundException;
+import com.brvsk.studentmanagementsystemV2.mapper.GradeMapper;
+import com.brvsk.studentmanagementsystemV2.model.dto.GradeDto;
 import com.brvsk.studentmanagementsystemV2.model.entity.Exam;
 import com.brvsk.studentmanagementsystemV2.model.entity.Grade;
 import com.brvsk.studentmanagementsystemV2.model.entity.Student;
@@ -14,6 +16,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -22,8 +25,7 @@ public class GradeService {
     private final GradeRepository gradeRepository;
     private final StudentRepository studentRepository;
     private final ExamRepository examRepository;
-    private final CourseRepository courseRepository;
-    private final GroupRepository groupRepository;
+    private final GradeMapper gradeMapper;
 
     public void addGrade(GradeRequest gradeRequest){
 
@@ -46,6 +48,14 @@ public class GradeService {
         newGrade.setExam(exam);
         newGrade.setStudent(student);
         gradeRepository.save(newGrade);
+    }
+
+    public List<GradeDto> getAllGrades(){
+        return gradeRepository
+                .findAll()
+                .stream()
+                .map(gradeMapper::toDto)
+                .toList();
     }
 
     private Grade toEntity (GradeRequest gradeRequest){

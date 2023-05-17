@@ -104,4 +104,18 @@ export const addNewExam = exam =>
     ).then(checkStatus)
 
 
+// GRADE
 
+export const getAllGrades = () =>
+    fetch("api/v1/grades")
+        .then(checkStatus);
+
+export const addNewGrade = grade =>
+    fetch("api/v1/grades", {
+            headers: {
+                'Content-Type' : 'application/json'
+            },
+            method: 'POST',
+            body: JSON.stringify(grade)
+        }
+    ).then(checkStatus)
