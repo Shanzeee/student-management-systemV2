@@ -70,6 +70,12 @@ const items = [
                         key: 'setting:21',
                     },
                     {
+                        label: (<NavLink to="/exams" className="nav-link">
+                            Exams
+                        </NavLink>),
+                        key: 'setting:23',
+                    },
+                    {
                         label: (<NavLink to="/grades" className="nav-link">
                             Grades
                         </NavLink>),

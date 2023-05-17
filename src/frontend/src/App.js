@@ -13,6 +13,7 @@ import {TeacherPage} from "./pages/teacher";
 import {GroupPage} from "./pages/group";
 import {GradePage} from "./pages/grade";
 import {StudentPage} from "./pages/student";
+import {ExamPage} from "./pages/examin";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             <Route path="/courses"  element={<CoursePage/>} />
             <Route path="/teachers"  element={<TeacherPage/>} />
               <Route path="/students"  element={<StudentPage/>} />
+            <Route path="/exams"  element={<ExamPage />}/>
             <Route path="/groups"  element={<GroupPage/>} />
             <Route path="/grades"  element={<GradePage/>} />
             <Route path="/404"  element={<NotFoundPage/>} />

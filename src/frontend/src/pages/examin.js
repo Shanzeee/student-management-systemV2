@@ -1,8 +1,9 @@
 import {useEffect, useState} from "react";
-import {getAllGroups} from "../client";
+import {getAllExams, getAllGroups} from "../client";
 import {Badge, Button, Empty, Table, Tag} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import GroupDrawerForm from "../drawers/GroupDrawerForm";
+import ExamDrawerForm from "../drawers/ExamDrawerForm";
 
 const columns = [
 
@@ -12,52 +13,67 @@ const columns = [
         key: 'id',
     },
     {
-        title: 'group name',
-        dataIndex: 'groupName',
-        key: 'groupName',
+        title: 'starts at',
+        dataIndex: 'startsAt',
+        key: 'startsAt',
+    },
+    {
+        title: 'exam name',
+        dataIndex: 'name',
+        key: 'name',
+    },
+    {
+        title: 'course name',
+        dataIndex: 'courseName',
+        key: 'courseName',
+    },
+    {
+        title: 'course id',
+        dataIndex: 'courseId',
+        key: 'courseId',
     }
 
 ];
 
 
-const GroupPage = () => {
-    const [groups, setGroups] = useState([]);
+const ExamPage = () => {
+    const [exams, setExams] = useState([]);
     const [collapsed, setCollapsed] = useState(false);
     const [showDrawer, setShowDrawer] = useState(false);
-    const fetchGroups = () =>
-        getAllGroups()
+    const fetchExams = () =>
+        getAllExams()
             .then(res => res.json())
             .then(data => {
                 console.log(data);
-                setGroups(data);
+                setExams(data);
             })
 
     useEffect(() => {
         console.log("component is mounted");
-        fetchGroups();
+        fetchExams();
     }, [])
 
-    const renderGroup = () => {
+    const renderExam = () => {
 
         return <>
-            <GroupDrawerForm
+            <ExamDrawerForm
                 showDrawer={showDrawer}
                 setShowDrawer={setShowDrawer}
-                fetchGroups={fetchGroups}
+                fetchGroups={fetchExams}
             />
             <Table
-                dataSource={groups}
+                dataSource={exams}
                 columns={columns}
                 bordered
                 title={() =>
                     <>
-                        <Tag style={{marginLeft: "10px"}}>Number of groups</Tag>
-                        <Badge count={groups.length} className="site-badge-count-4"/>
+                        <Tag style={{marginLeft: "10px"}}>Number of Exams</Tag>
+                        <Badge count={exams.length} className="site-badge-count-4"/>
                         <br/><br/>
                         <Button
                             onClick={() => setShowDrawer(!showDrawer)}
                             type="primary" shape="round" icon={<PlusOutlined/>} size="small">
-                            Add New Group
+                            Add New Exam
                         </Button>
                     </>
 
@@ -69,7 +85,7 @@ const GroupPage = () => {
         </>
 
     }
-    return renderGroup()
+    return renderExam()
 };
 
-export {GroupPage};
+export {ExamPage};
