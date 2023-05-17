@@ -2,6 +2,7 @@ import {Drawer, Input, Col, Select, Form, Row, Button, Spin} from 'antd';
 import {LoadingOutlined} from "@ant-design/icons";
 import {useState} from "react";
 import {createNewTeacher} from "../client";
+import {errorNotification, successNotification} from "../common/Notification";
 
 
 const {Option} = Select;
@@ -17,9 +18,18 @@ function TeacherDrawerForm({showDrawer, setShowDrawer, fetchTeachers}) {
             .then(() => {
                 console.log("teacher added")
                 onCLose();
+                successNotification("teacher successfully added", `${teacher.name} was added to system`)
                 fetchTeachers();
             }).catch(err => {
-            console.log(err)
+            console.log(err);
+            err.response.json().then(res => {
+                console.log(res);
+                errorNotification(
+                    "There was an issue",
+                    `${res.message} [${res.status}] [${res.error}]`,
+                    "bottomLeft"
+                )
+            });
         }).finally(() => {
             setSubmitting(false)
         })

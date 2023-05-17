@@ -2,6 +2,7 @@ import {Drawer, Input, Col, Select, Form, Row, Button, Spin} from 'antd';
 import {LoadingOutlined} from "@ant-design/icons";
 import {useState} from "react";
 import {addNewExam} from "../client";
+import {errorNotification, successNotification} from "../common/Notification";
 
 
 const {Option} = Select;
@@ -15,11 +16,20 @@ function ExamDrawerForm({showDrawer, setShowDrawer, fetchExams}) {
         console.log(JSON.stringify(exam, null, 2));
         addNewExam(exam)
             .then(() => {
-                console.log("course added")
+                console.log("exam added")
                 onCLose();
+                successNotification("exam successfully added", `${exam.name} was added to system`)
                 fetchExams();
             }).catch(err => {
-            console.log(err)
+            console.log(err);
+            err.response.json().then(res => {
+                console.log(res);
+                errorNotification(
+                    "There was an issue",
+                    `${res.message} [${res.status}] [${res.error}]`,
+                    "bottomLeft"
+                )
+            });
         }).finally(() => {
             setSubmitting(false)
         })
@@ -54,8 +64,8 @@ function ExamDrawerForm({showDrawer, setShowDrawer, fetchExams}) {
             <Row gutter={16}>
                 <Col span={12}>
                     <Form.Item
-                        name="id"
-                        label="id"
+                        name="courseId"
+                        label="course id"
                         rules={[{required: true, message: 'Please enter course id'}]}
                     >
                         <Input placeholder="Please enter course id"/>

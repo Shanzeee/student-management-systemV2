@@ -3,6 +3,7 @@ import {useState, useEffect} from "react";
 import {Badge, Button, Empty, Table, Tag} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import DepartmentDrawerForm from "../drawers/DepartmentDrawerForm";
+import {errorNotification} from "../common/Notification";
 
 const columns = [
 
@@ -29,6 +30,7 @@ const columns = [
 const DepartmentPage = () => {
     const [departments, setDepartments] = useState([]);
     const [collapsed, setCollapsed] = useState(false);
+    const [fetching, setFetching] = useState(true);
     const [showDrawer, setShowDrawer] = useState(false);
     const fetchDepartments = () =>
         getAllDepartments()
@@ -36,12 +38,21 @@ const DepartmentPage = () => {
             .then(data => {
                 console.log(data);
                 setDepartments(data);
-            })
+            }).catch(err => {
+                console.log(err.response)
+                err.response.json().then(res => {
+                    console.log(res);
+                    errorNotification(
+                        "There was an issue",
+                        `${res.message} [${res.status}] [${res.error}]`
+                    )
+                });
+        }).finally(()=> setFetching(false))
 
     useEffect(() => {
         console.log("component is mounted");
         fetchDepartments();
-    }, [])
+    }, []);
 
     const renderDepartments = () => {
 

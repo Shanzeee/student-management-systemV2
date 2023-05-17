@@ -21,7 +21,7 @@ export const createNewStudent = student =>
             method: 'POST',
             body: JSON.stringify(student)
         }
-    );
+    ).then(checkStatus)
 
 // TEACHERS
 export const getAllTeachers = () =>
@@ -36,7 +36,7 @@ export const createNewTeacher = teacher =>
             method: 'POST',
             body: JSON.stringify(teacher)
         }
-    );
+    ).then(checkStatus)
 
 // DEPARTMENTS
 export const getAllDepartments = () =>
@@ -51,7 +51,7 @@ export const createNewDepartment = department =>
             method: 'POST',
             body: JSON.stringify(department)
         }
-    );
+    ).then(checkStatus)
 
 // GROUP
 
@@ -67,7 +67,7 @@ export const createNewGroup = group =>
             method: 'POST',
             body: JSON.stringify(group)
         }
-    );
+    ).then(checkStatus)
 
 
 // COURSE
@@ -84,7 +84,7 @@ export const createNewCourse = course =>
             method: 'POST',
             body: JSON.stringify(course)
         }
-    );
+    ).then(checkStatus)
 
 
 // EXAM
@@ -101,7 +101,7 @@ export const addNewExam = exam =>
             method: 'POST',
             body: JSON.stringify(exam)
         }
-    );
+    ).then(checkStatus)
 
 
 

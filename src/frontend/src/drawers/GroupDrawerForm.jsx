@@ -2,6 +2,7 @@ import {Drawer, Input, Col, Select, Form, Row, Button, Spin} from 'antd';
 import {LoadingOutlined} from "@ant-design/icons";
 import {useState} from "react";
 import {createNewGroup} from "../client";
+import {errorNotification, successNotification} from "../common/Notification";
 
 
 const {Option} = Select;
@@ -17,9 +18,18 @@ function GroupDrawerForm({showDrawer, setShowDrawer, fetchGroups}) {
             .then(() => {
                 console.log("group added")
                 onCLose();
+                successNotification("Group successfully added")
                 fetchGroups();
             }).catch(err => {
-            console.log(err)
+            console.log(err);
+            err.response.json().then(res => {
+                console.log(res);
+                errorNotification(
+                    "There was an issue",
+                    `${res.message} [${res.status}] [${res.error}]`,
+                    "bottomLeft"
+                )
+            });
         }).finally(() => {
             setSubmitting(false)
         })
