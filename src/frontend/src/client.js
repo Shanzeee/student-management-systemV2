@@ -69,6 +69,10 @@ export const createNewGroup = group =>
         }
     ).then(checkStatus)
 
+export const deleteGroup = groupId =>
+    fetch(`api/v1/groups/${groupId}`, {
+        method: 'DELETE'
+    }).then(checkStatus);
 
 // COURSE
 

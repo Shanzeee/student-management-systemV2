@@ -37,6 +37,7 @@ public class GradeService {
 
         Long studentGroupId = student.getGroup().getId();
         Long examGroupId = exam.getCourse().getGroup().getId();
+
         if (studentGroupId != examGroupId){
             throw new BadRequestException("The student did not write this exam");
         }

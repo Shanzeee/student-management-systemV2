@@ -18,9 +18,10 @@ function ExamDrawerForm({showDrawer, setShowDrawer, fetchExams}) {
             .then(() => {
                 console.log("exam added")
                 onCLose();
-                successNotification("exam successfully added", `${exam.name} was added to system`)
+                successNotification("exam successfully added")
                 fetchExams();
-            }).catch(err => {
+            })
+            .catch(err => {
             console.log(err);
             err.response.json().then(res => {
                 console.log(res);

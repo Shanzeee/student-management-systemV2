@@ -16,6 +16,7 @@ public class StudentMapper {
                 .lastName(student.getLastName())
                 .email(student.getEmail())
                 .gender(student.getGender())
+                .groupName(student.getGroup().getGroupName())
                 .build();
     }
 

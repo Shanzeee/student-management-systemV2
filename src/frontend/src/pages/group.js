@@ -1,10 +1,11 @@
 import {useEffect, useState} from "react";
-import {getAllGroups} from "../client";
-import {Badge, Button, Empty, Table, Tag} from "antd";
+import {deleteGroup, getAllGroups} from "../client";
+import {Badge, Button, Empty, Table, Tag, Radio,Popconfirm} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
 import GroupDrawerForm from "../drawers/GroupDrawerForm";
+import {errorNotification, successNotification} from "../common/Notification";
 
-const columns = [
+const columns = fetchGroups => [
 
     {
         title: 'Id',
@@ -20,9 +21,40 @@ const columns = [
         title: 'department',
         dataIndex: 'departmentShortcut',
         key: 'departmentShortcut',
+    },
+    {
+        title: 'Actions',
+        key: 'actions',
+        render: (text, group) =>
+            <Radio.Group>
+                <Popconfirm
+                    placement='topRight'
+                    title={`Are you sure to delete ${group.groupName}`}
+                    onConfirm={() => removeGroup(group.id, fetchGroups)}
+                    okText='Yes'
+                    cancelText='No'>
+                    <Radio.Button value="small">Delete</Radio.Button>
+                </Popconfirm>
+                <Radio.Button onClick={() => alert("TODO: Implement edit group")} value="small">Edit</Radio.Button>
+            </Radio.Group>
     }
 
 ];
+
+const removeGroup = (groupId, callback) => {
+    deleteGroup(groupId).then(() => {
+        successNotification("Group deleted", `Group with ${groupId} was deleted`);
+        callback();
+    }).catch(err => {
+        err.response.json().then(res => {
+            console.log(res);
+            errorNotification(
+                "There was an issue",
+                `${res.message} [${res.status}] [${res.error}]`
+            )
+        });
+    })
+}
 
 
 const GroupPage = () => {
@@ -52,7 +84,7 @@ const GroupPage = () => {
             />
             <Table
                 dataSource={groups}
-                columns={columns}
+                columns={columns(fetchGroups)}
                 bordered
                 title={() =>
                     <>

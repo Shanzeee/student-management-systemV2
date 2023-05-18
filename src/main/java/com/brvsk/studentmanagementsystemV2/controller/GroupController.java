@@ -31,4 +31,9 @@ public class GroupController {
         return new ResponseEntity<>("A new group " +groupRequest.getGroupName()+ " has been added", HttpStatus.CREATED);
     }
 
+    @DeleteMapping(path = "{groupId}")
+    public void deleteGroup(@PathVariable("groupId") Long groupId){
+        groupService.deleteGroup(groupId);
+    }
+
 }

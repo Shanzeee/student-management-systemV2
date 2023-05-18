@@ -31,6 +31,11 @@ const columns = [
         dataIndex: 'gender',
         key: 'gender',
     },
+    {
+        title: 'group name',
+        dataIndex: 'groupName',
+        key: 'groupName',
+    }
 
 ];
 

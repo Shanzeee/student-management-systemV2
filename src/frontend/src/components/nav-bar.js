@@ -41,7 +41,7 @@ const items = [
                         label: (<NavLink to="/groups" className="nav-link">
                             Groups
                         </NavLink>),
-                        key: 'setting:22',
+                        key: 'setting:2',
                     },
                     {
                         label: (<NavLink to="/courses" className="nav-link">
@@ -67,19 +67,19 @@ const items = [
                         label: (<NavLink to="/teachers" className="nav-link">
                             Teachers
                         </NavLink>),
-                        key: 'setting:21',
+                        key: 'setting:20',
                     },
                     {
                         label: (<NavLink to="/exams" className="nav-link">
                             Exams
                         </NavLink>),
-                        key: 'setting:23',
+                        key: 'setting:21',
                     },
                     {
                         label: (<NavLink to="/grades" className="nav-link">
                             Grades
                         </NavLink>),
-                        key: 'setting:23',
+                        key: 'setting:22',
                     },
                 ],
             },

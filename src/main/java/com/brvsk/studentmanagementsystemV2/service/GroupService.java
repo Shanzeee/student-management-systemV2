@@ -1,6 +1,9 @@
 package com.brvsk.studentmanagementsystemV2.service;
 
+import com.brvsk.studentmanagementsystemV2.exception.BadRequestException;
 import com.brvsk.studentmanagementsystemV2.exception.notFound.DepartmentNotFoundException;
+import com.brvsk.studentmanagementsystemV2.exception.notFound.GroupNotFoundException;
+import com.brvsk.studentmanagementsystemV2.exception.notFound.NotFoundException;
 import com.brvsk.studentmanagementsystemV2.mapper.GroupMapper;
 import com.brvsk.studentmanagementsystemV2.model.dto.GroupDto;
 import com.brvsk.studentmanagementsystemV2.model.entity.Department;
@@ -23,14 +26,18 @@ public class GroupService {
 
     public void addGroup(GroupRequest groupRequest){
 
-        Long departmentId = departmentRepository
-                .getDepartmentByShortcut(groupRequest.getDepartmentShortcut())
-                .getId();
-        departmentRepository.findById(departmentId)
-                .orElseThrow(() -> new DepartmentNotFoundException(departmentId));
+        if (groupRepository.existsByGroupName(groupRequest.getGroupName())){
+            throw new BadRequestException("Group with this name already exists");
+        }
+
+        Department department = departmentRepository
+                .findDepartmentByShortcut(groupRequest.getDepartmentShortcut())
+                .orElseThrow(() ->
+                        new NotFoundException
+                                ("department with shortcut " +groupRequest.getDepartmentShortcut()+ " not found"));
+
 
         Group newGroup = mapToEntity(groupRequest);
-        Department department = departmentRepository.getReferenceById(departmentId);
 
         newGroup.setDepartment(department);
         groupRepository.save(newGroup);
@@ -43,6 +50,13 @@ public class GroupService {
                 .stream()
                 .map(groupMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    public void deleteGroup(Long groupId){
+        if (!groupRepository.existsById(groupId)){
+            throw new GroupNotFoundException(groupId);
+        }
+        groupRepository.deleteById(groupId);
     }
 
     private Group mapToEntity(GroupRequest groupRequest){
