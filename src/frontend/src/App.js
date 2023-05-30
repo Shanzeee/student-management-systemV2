@@ -2,18 +2,18 @@ import logo from './logo.svg';
 import './App.css';
 import {Header} from "./components/nav-bar";
 import {BrowserRouter, Route, Routes, useRoutes} from "react-router-dom";
-import {NotFoundPage} from "./pages/not-found";
+import {NotFoundPage} from "../../../../usos/src/frontend/src/pages/not-found";
 import {UnauthorizedPage} from "./pages/unauthorized";
-import {HomePage} from "./pages/home";
-import {LoginPage} from "./pages/Login";
+import {HomePage} from "../../../../usos/src/frontend/src/pages/home";
 import {RegisterPage} from "./pages/Register";
-import {DepartmentPage} from "./pages/department";
-import {CoursePage} from "./pages/course";
-import {TeacherPage} from "./pages/teacher";
-import {GroupPage} from "./pages/group";
-import {GradePage} from "./pages/grade";
-import {StudentPage} from "./pages/student";
+import {DepartmentPage} from "../../../../usos/src/frontend/src/pages/department";
+import {CoursePage} from "../../../../usos/src/frontend/src/pages/course";
+import {TeacherPage} from "../../../../usos/src/frontend/src/pages/teacher";
+import {GroupPage} from "../../../../usos/src/frontend/src/pages/group";
+import {GradePage} from "../../../../usos/src/frontend/src/pages/grade";
+import {StudentPage} from "../../../../usos/src/frontend/src/pages/student";
 import {ExamPage} from "./pages/examin";
+import LoginForm from "./pages/Login";
 
 function App() {
   return (
@@ -23,7 +23,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage/>} />
             <Route path="/home"  element={<HomePage/>} />
-            <Route path="/login"  element={<LoginPage/>} />
+            <Route path="/login"  element={<LoginForm/>} />
             <Route path="/register"  element={<RegisterPage/>} />
             <Route path="/departments"  element={<DepartmentPage/>} />
             <Route path="/courses"  element={<CoursePage/>} />

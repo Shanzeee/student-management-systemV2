@@ -1,3 +1,5 @@
+import {useState} from "react";
+
 const checkStatus = response => {
     if (response.ok) {
         return response;
@@ -123,3 +125,36 @@ export const addNewGrade = grade =>
             body: JSON.stringify(grade)
         }
     ).then(checkStatus)
+
+//LOGIN
+
+const handleSubmit = (event) => {
+    event.preventDefault();
+
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+
+    const credentials = {
+        username: username,
+        password: password
+    };
+
+    fetch('/api/v1/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(credentials)
+    })
+        .then(response => {
+            if (response.ok) {
+                // Przekierowanie po poprawnym zalogowaniu
+                window.location.href = '/home';
+            } else {
+                // Obsługa błędu logowania
+            }
+        })
+        .catch(error => {
+            // Obsługa błędów połączenia
+        });
+};

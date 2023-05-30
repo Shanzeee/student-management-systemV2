@@ -1,8 +1,8 @@
 import {useEffect, useState} from "react";
-import {getAllExams, getAllGroups} from "../client";
+import {getAllExams, getAllGroups} from "../../../../../usos/src/frontend/src/pages/client";
 import {Badge, Button, Empty, Table, Tag} from "antd";
 import {PlusOutlined} from "@ant-design/icons";
-import GroupDrawerForm from "../drawers/GroupDrawerForm";
+import GroupDrawerForm from "../../../../../usos/src/frontend/src/drawers/GroupDrawerForm";
 import ExamDrawerForm from "../drawers/ExamDrawerForm";
 
 const columns = [

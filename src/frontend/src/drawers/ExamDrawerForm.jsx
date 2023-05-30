@@ -1,7 +1,7 @@
 import {Drawer, Input, Col, Select, Form, Row, Button, Spin} from 'antd';
 import {LoadingOutlined} from "@ant-design/icons";
 import {useState} from "react";
-import {addNewExam} from "../client";
+import {addNewExam} from "../../../../../usos/src/frontend/src/pages/client";
 import {errorNotification, successNotification} from "../common/Notification";
 
 
