@@ -1,12 +1,10 @@
 package com.brvsk.studentmanagementsystemV2.auth.registration;
 
 import com.brvsk.studentmanagementsystemV2.auth.appuser.AppUserRepository;
-import com.brvsk.studentmanagementsystemV2.auth.appuser.AppUserRole;
 import com.brvsk.studentmanagementsystemV2.auth.appuser.AppUserService;
-import com.brvsk.studentmanagementsystemV2.auth.appuser.AppUser;
 import com.brvsk.studentmanagementsystemV2.auth.registration.token.ConfirmationToken;
+import com.brvsk.studentmanagementsystemV2.auth.registration.token.ConfirmationTokenRepository;
 import com.brvsk.studentmanagementsystemV2.auth.registration.token.ConfirmationTokenService;
-import com.brvsk.studentmanagementsystemV2.email.EmailSender;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,36 +15,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class RegistrationService {
 
-    private final EmailValidator emailValidator;
-    private final AppUserRepository appUserRepository;
     private final AppUserService appUserService;
     private final ConfirmationTokenService confirmationTokenService;
-    private final EmailSender emailSender;
-
-    public String register(RegistrationRequest request) {
-        boolean isValidEmail = emailValidator.test(request.getEmail());
-        if (!isValidEmail){
-            throw new IllegalStateException("email is not valid");
-        }
-
-        String token = appUserService.signUpUser(
-                new AppUser(
-                        request.getFirstName(),
-                        request.getLastName(),
-                        request.getEmail(),
-                        request.getPassword(),
-                        AppUserRole.USER
-
-                )
-        );
-
-        String link = "http://localhost:8080/api/v1/registration/confirm?token=" + token;
-        emailSender.send(
-                request.getEmail(),
-                "Confirm your email",
-                buildEmail(request.getFirstName(), link));
-        return token;
-    }
+    private final ConfirmationTokenRepository confirmationTokenRepository;
+    private final AppUserRepository appUserRepository;
 
     @Transactional
     public String confirmToken(String token) {
@@ -68,12 +40,9 @@ public class RegistrationService {
         confirmationTokenService.setConfirmedAt(token);
         appUserService.enableAppUser(
                 confirmationToken.getAppUser().getEmail());
-        return "confirmed";
-    }
+        confirmationTokenRepository.delete(confirmationToken);
+        appUserRepository.delete(confirmationToken.getAppUser());
 
-    private String buildEmail(String name, String link) {
-        return "Hello " + name +
-                "\nConfirm your email by clicking on link below \n"+
-                link;
+        return "confirmed";
     }
 }

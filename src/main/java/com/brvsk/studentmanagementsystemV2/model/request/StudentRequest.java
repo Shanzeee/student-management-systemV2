@@ -4,12 +4,13 @@ import com.brvsk.studentmanagementsystemV2.model.entity.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 
 import javax.validation.constraints.NotNull;
 
 @Builder
 @AllArgsConstructor
-@Data
+@Getter
 public class StudentRequest {
 
     @NotNull
@@ -19,7 +20,7 @@ public class StudentRequest {
     @NotNull
     private String email;
     @NotNull
-    private Gender gender;
+    private String password;
     @NotNull
     private Long groupId;
 }

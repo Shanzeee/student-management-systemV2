@@ -1,53 +1,25 @@
 package com.brvsk.studentmanagementsystemV2.model.entity;
 
+import com.brvsk.studentmanagementsystemV2.auth.appuser.AppUser;
+import com.brvsk.studentmanagementsystemV2.auth.appuser.AppUserRole;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 
 @Data
-@Builder
+@SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "Student")
 @Table(name = "student")
-public class Student {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(
-            name = "id",
-            updatable = false
-    )
-    private  Long id;
-
-    @Column(
-            name = "first_name",
-            nullable = false,
-            columnDefinition = "TEXT"
-    )
-    private String firstName;
-
-    @Column(
-            name = "last_name",
-            nullable = false,
-            columnDefinition = "TEXT"
-    )
-    private String lastName;
-
-    @Column(
-            name = "email",
-            nullable = false,
-            columnDefinition = "TEXT"
-    )
-    private String email;
-
-    @Enumerated
-    @Column(
-            name = "gender",
-            nullable = false
-    )
-    private Gender gender;
+public class Student extends AppUser {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Group group;
+
+    public Student(String firstName, String lastName, String email, String password, AppUserRole appUserRole, Group group) {
+        super(firstName, lastName, email, password, appUserRole);
+        this.group = group;
+    }
 }

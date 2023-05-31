@@ -41,9 +41,9 @@ class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/v*/registration/**")
                 .permitAll()
-                .anyRequest()
-                .authenticated().and()
-                .formLogin();
+                .anyRequest().permitAll();
+//                .authenticated().and()
+//                .formLogin();
 //        http.authorizeRequests().antMatchers(POST,"/api/v1/departments/**").hasAnyAuthority("ROLE_ADMIN");
 //        http.authorizeRequests().antMatchers(POST,"/api/v1/groups/**").hasAnyAuthority("ROLE_ADMIN");
 //        http.authorizeRequests().antMatchers(DELETE,"/api/v1/groups/**").hasAnyAuthority("ROLE_ADMIN");

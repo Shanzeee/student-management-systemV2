@@ -1,7 +1,9 @@
 package com.brvsk.studentmanagementsystemV2.auth.appuser;
 
+import com.brvsk.studentmanagementsystemV2.auth.registration.EmailValidator;
 import com.brvsk.studentmanagementsystemV2.auth.registration.token.ConfirmationToken;
 import com.brvsk.studentmanagementsystemV2.auth.registration.token.ConfirmationTokenService;
+import com.brvsk.studentmanagementsystemV2.email.EmailSender;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +26,8 @@ public class AppUserService implements UserDetailsService {
     private final AppUserRepository appUserRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ConfirmationTokenService confirmationTokenService;
+    private final EmailValidator emailValidator;
+    private final EmailSender emailSender;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -32,6 +36,10 @@ public class AppUserService implements UserDetailsService {
     }
 
     public String signUpUser(AppUser appUser){
+        boolean isValidEmail = emailValidator.test(appUser.getEmail());
+        if (!isValidEmail){
+            throw new IllegalStateException("email is not valid");
+        }
         boolean userExists = appUserRepository
                 .findByEmail(appUser.getEmail())
                 .isPresent();
@@ -50,11 +58,22 @@ public class AppUserService implements UserDetailsService {
                 appUser
         );
         confirmationTokenService.saveConfirmationToken(confirmationToken);
-        // TODO: 5/31/2023 SEND EMAIL 
+
+        String link = "http://localhost:8080/api/v1/registration/confirm?token=" + token;
+        emailSender.send(
+                appUser.getEmail(),
+                "Confirm your email",
+                buildConfirmationEmail(appUser.getFirstName(), link));
         return token;
     }
 
     public int enableAppUser(String email) {
         return appUserRepository.enableAppUser(email);
+    }
+
+    private String buildConfirmationEmail(String name, String link) {
+        return "Hello " + name +
+                "\nConfirm your email by clicking on link below \n"+
+                link;
     }
 }

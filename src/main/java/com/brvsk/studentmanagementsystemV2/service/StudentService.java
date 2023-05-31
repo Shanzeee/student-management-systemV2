@@ -1,5 +1,12 @@
 package com.brvsk.studentmanagementsystemV2.service;
 
+import com.brvsk.studentmanagementsystemV2.auth.appuser.AppUser;
+import com.brvsk.studentmanagementsystemV2.auth.appuser.AppUserRole;
+import com.brvsk.studentmanagementsystemV2.auth.appuser.AppUserService;
+import com.brvsk.studentmanagementsystemV2.auth.registration.EmailValidator;
+import com.brvsk.studentmanagementsystemV2.auth.security.PasswordEncoder;
+import com.brvsk.studentmanagementsystemV2.email.EmailSender;
+import com.brvsk.studentmanagementsystemV2.exception.notFound.GroupNotFoundException;
 import com.brvsk.studentmanagementsystemV2.exception.notFound.StudentNotFoundException;
 import com.brvsk.studentmanagementsystemV2.mapper.ExamMapper;
 import com.brvsk.studentmanagementsystemV2.mapper.StudentMapper;
@@ -12,6 +19,7 @@ import com.brvsk.studentmanagementsystemV2.model.request.StudentRequest;
 import com.brvsk.studentmanagementsystemV2.repository.GroupRepository;
 import com.brvsk.studentmanagementsystemV2.repository.StudentRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,14 +32,29 @@ public class StudentService {
     private final GroupRepository groupRepository;
     private final StudentMapper studentMapper;
     private final ExamMapper examMapper;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final AppUserService appUserService;
 
-    public void addStudent(StudentRequest studentRequest) {
+    public String registerStudent(StudentRequest studentRequest) {
         Long groupId = studentRequest.getGroupId();
-        Group group = groupRepository.getReferenceById(groupId);
+        Group group = groupRepository.findById(groupId)
+                .orElseThrow(() -> new GroupNotFoundException(groupId));
+
+        String token = appUserService.signUpUser(
+                new AppUser(
+                        studentRequest.getFirstName(),
+                        studentRequest.getLastName(),
+                        studentRequest.getEmail(),
+                        studentRequest.getPassword(),
+                        AppUserRole.STUDENT
+                )
+        );
+
         Student student = toEntity(studentRequest);
 
         student.setGroup(group);
         studentRepository.save(student);
+        return token;
     }
 
     public List<StudentDto> getAllStudents(){
@@ -53,7 +76,10 @@ public class StudentService {
                 .firstName(studentRequest.getFirstName())
                 .lastName(studentRequest.getLastName())
                 .email(studentRequest.getEmail())
-                .gender(studentRequest.getGender())
+                .password(bCryptPasswordEncoder.encode(studentRequest.getPassword()))
+                .appUserRole(AppUserRole.STUDENT)
+                .enabled(false)
+                .locked(false)
                 .build();
     }
 }
