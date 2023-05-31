@@ -2,7 +2,6 @@ package com.brvsk.studentmanagementsystemV2.auth;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.brvsk.studentmanagementsystemV2.model.entity.AppUser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
