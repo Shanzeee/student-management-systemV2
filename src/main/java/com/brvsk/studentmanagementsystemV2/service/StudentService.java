@@ -10,6 +10,7 @@ import com.brvsk.studentmanagementsystemV2.exception.notFound.GroupNotFoundExcep
 import com.brvsk.studentmanagementsystemV2.exception.notFound.StudentNotFoundException;
 import com.brvsk.studentmanagementsystemV2.mapper.ExamMapper;
 import com.brvsk.studentmanagementsystemV2.mapper.StudentMapper;
+import com.brvsk.studentmanagementsystemV2.model.dto.CourseDto;
 import com.brvsk.studentmanagementsystemV2.model.dto.ExamDto;
 import com.brvsk.studentmanagementsystemV2.model.dto.StudentDto;
 import com.brvsk.studentmanagementsystemV2.model.entity.Course;
@@ -57,19 +58,36 @@ public class StudentService {
         return token;
     }
 
+    public Long getStudentGroup(final Long studentId) {
+        var student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new StudentNotFoundException(studentId));
+        return student.getGroup().getId();
+    }
+
     public List<StudentDto> getAllStudents(){
         return studentMapper.toListDto(studentRepository.findAll());
     }
 
-    public List<ExamDto> getStudentsExam(Long studentId){
+    public List<ExamDto> getStudentsExams(Long studentId){
         var student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new StudentNotFoundException(studentId));
-        List<Course> studentCourses = student.getGroup().getCourses();
+        var studentCourses = student.getGroup().getCourses();
         return studentCourses.stream()
                 .flatMap(course -> course.getExams().stream())
                 .map(examMapper::toDto)
                 .toList();
     }
+
+    public List<CourseDto> getStudentCourses(Long studentId){
+        var student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new StudentNotFoundException(studentId));
+        var studentCourses = student.getGroup().getCourses();
+
+        return studentCourses.stream()
+                .map(studentMapper::toCourseDto)
+                .toList();
+    }
+
 
     private Student toEntity(StudentRequest studentRequest){
         return Student.builder()

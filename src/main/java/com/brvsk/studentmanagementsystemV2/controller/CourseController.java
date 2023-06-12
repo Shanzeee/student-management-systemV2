@@ -28,4 +28,11 @@ public class CourseController {
         courseService.addCourse(courseRequest);
         return new ResponseEntity<>("A new course " +courseRequest.getName()+ " has been added", HttpStatus.CREATED);
     }
+
+    @GetMapping()
+    public List<CourseDto> getCoursesForGroup(@RequestParam Long groupId){
+        return courseService.getCoursesForGroup(groupId);
+    }
+
+
 }

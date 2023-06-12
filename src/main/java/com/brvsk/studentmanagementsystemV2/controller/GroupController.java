@@ -1,8 +1,11 @@
 package com.brvsk.studentmanagementsystemV2.controller;
 
+import com.brvsk.studentmanagementsystemV2.model.dto.CourseDto;
 import com.brvsk.studentmanagementsystemV2.model.dto.GroupDto;
+import com.brvsk.studentmanagementsystemV2.model.dto.StudentDto;
 import com.brvsk.studentmanagementsystemV2.model.entity.Group;
 import com.brvsk.studentmanagementsystemV2.model.request.GroupRequest;
+import com.brvsk.studentmanagementsystemV2.service.CourseService;
 import com.brvsk.studentmanagementsystemV2.service.GroupService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,6 +21,7 @@ import java.util.List;
 public class GroupController {
 
     private final GroupService groupService;
+    private final CourseService courseService;
 
 
     @GetMapping
@@ -34,6 +38,18 @@ public class GroupController {
     @DeleteMapping(path = "{groupId}")
     public void deleteGroup(@PathVariable("groupId") Long groupId){
         groupService.deleteGroup(groupId);
+    }
+
+    @GetMapping
+    @RequestMapping("/{groupId}/courses")
+    public List<CourseDto> getCoursesForGroup(@PathVariable Long groupId){
+        return courseService.getCoursesForGroup(groupId);
+    }
+
+    @GetMapping
+    @RequestMapping("/{groupId}/students")
+    public List<StudentDto> getStudentsForGroup(@PathVariable Long groupId){
+        return courseService.getStudentsForGroup(groupId);
     }
 
 }

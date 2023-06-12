@@ -1,9 +1,11 @@
 package com.brvsk.studentmanagementsystemV2.service;
 
+import com.brvsk.studentmanagementsystemV2.exception.notFound.CourseNotFoundException;
 import com.brvsk.studentmanagementsystemV2.exception.notFound.GroupNotFoundException;
 import com.brvsk.studentmanagementsystemV2.exception.notFound.TeacherNotFoundException;
 import com.brvsk.studentmanagementsystemV2.mapper.CourseMapper;
 import com.brvsk.studentmanagementsystemV2.model.dto.CourseDto;
+import com.brvsk.studentmanagementsystemV2.model.dto.StudentDto;
 import com.brvsk.studentmanagementsystemV2.model.entity.Course;
 import com.brvsk.studentmanagementsystemV2.model.request.CourseRequest;
 import com.brvsk.studentmanagementsystemV2.repository.CourseRepository;
@@ -44,6 +46,20 @@ public class CourseService {
         newCourse.setGroup(group);
 
         courseRepository.save(newCourse);
+    }
+
+    public List<StudentDto> getStudentsForGroup(Long courseId){
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new CourseNotFoundException(courseId));
+
+        return course.getGroup().getStudents()
+                .stream()
+                .map(courseMapper::toStudentDto)
+                .toList();
+    }
+
+    public List<CourseDto> getCoursesForGroup(Long groupId){
+        return courseMapper.toListDto(courseRepository.findAllByGroup_Id(groupId));
     }
 
     private Course toEntity(CourseRequest courseRequest){

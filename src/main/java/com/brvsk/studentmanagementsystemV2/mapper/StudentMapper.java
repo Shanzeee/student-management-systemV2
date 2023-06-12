@@ -1,6 +1,8 @@
 package com.brvsk.studentmanagementsystemV2.mapper;
 
+import com.brvsk.studentmanagementsystemV2.model.dto.CourseDto;
 import com.brvsk.studentmanagementsystemV2.model.dto.StudentDto;
+import com.brvsk.studentmanagementsystemV2.model.entity.Course;
 import com.brvsk.studentmanagementsystemV2.model.entity.Student;
 import org.springframework.stereotype.Component;
 
@@ -23,5 +25,13 @@ public class StudentMapper {
         return entities.stream()
                 .map(this::toDto)
                 .toList();
+    }
+
+    public CourseDto toCourseDto(Course course){
+        return CourseDto.builder()
+                .groupId(course.getId())
+                .name(course.getName())
+                .teacherName(course.getTeacher().getFirstName() + course.getTeacher().getLastName())
+                .build();
     }
 }

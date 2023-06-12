@@ -1,5 +1,6 @@
 package com.brvsk.studentmanagementsystemV2.controller;
 
+import com.brvsk.studentmanagementsystemV2.model.dto.CourseDto;
 import com.brvsk.studentmanagementsystemV2.model.dto.ExamDto;
 import com.brvsk.studentmanagementsystemV2.model.dto.StudentDto;
 import com.brvsk.studentmanagementsystemV2.model.entity.Student;
@@ -31,6 +32,18 @@ public class StudentController {
     @GetMapping
     @RequestMapping("/{studentId}/exams")
     public List<ExamDto> getStudentExams(@PathVariable Long studentId){
-        return studentService.getStudentsExam(studentId);
+        return studentService.getStudentsExams(studentId);
+    }
+
+    @GetMapping
+    @RequestMapping("/{studentId}/courses")
+    public List<CourseDto> getStudentCourses(@PathVariable Long studentId){
+        return studentService.getStudentCourses(studentId);
+    }
+
+    @GetMapping
+    @RequestMapping("/{studentId}/group")
+    public Long getStudentGroup(@PathVariable Long studentId){
+        return studentService.getStudentGroup(studentId);
     }
 }
