@@ -1,15 +1,14 @@
 package com.brvsk.studentmanagementsystemV2.model.request;
 
 import com.brvsk.studentmanagementsystemV2.model.entity.Gender;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Getter;
+import lombok.*;
 
 import javax.validation.constraints.NotNull;
 
 @Builder
+@Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 public class StudentRequest {
 
