@@ -7,7 +7,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -31,6 +33,8 @@ public class Course {
             cascade = {CascadeType.REFRESH,CascadeType.PERSIST,CascadeType.MERGE},
             fetch = FetchType.LAZY)
     private Group group;
+    @OneToMany(mappedBy = "course")
+    private List<Announcement> announcements = new ArrayList<>();
     @OneToMany(
             cascade = {CascadeType.REFRESH,CascadeType.PERSIST,CascadeType.MERGE},
             fetch = FetchType.LAZY)

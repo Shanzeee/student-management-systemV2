@@ -73,7 +73,7 @@ public class GradeService {
 
     private String buildGradeInfoEmail(String studentName) {
         return "Hello " + studentName +
-                " \n The teacher wrote a new grade in the student-management-system application";
+                " \n The teacher entered a new grade in the student-management-system application";
     }
 
 

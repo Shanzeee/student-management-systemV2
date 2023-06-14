@@ -40,8 +40,8 @@ public class RegistrationService {
         confirmationTokenService.setConfirmedAt(token);
         appUserService.enableAppUser(
                 confirmationToken.getAppUser().getEmail());
-        confirmationTokenRepository.delete(confirmationToken);
-        appUserRepository.delete(confirmationToken.getAppUser());
+//        confirmationTokenRepository.delete(confirmationToken);
+//        appUserRepository.delete(confirmationToken.getAppUser());
 
         return "confirmed";
     }
