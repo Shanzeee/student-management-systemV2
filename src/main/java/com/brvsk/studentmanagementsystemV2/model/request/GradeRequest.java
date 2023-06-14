@@ -1,5 +1,6 @@
 package com.brvsk.studentmanagementsystemV2.model.request;
 
+import com.brvsk.studentmanagementsystemV2.utils.Grade;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,7 +13,7 @@ public class GradeRequest {
     private Long studentId;
     @NotNull
     private Long examId;
-    @NotNull
+    @Grade
     private Double value;
 
 
