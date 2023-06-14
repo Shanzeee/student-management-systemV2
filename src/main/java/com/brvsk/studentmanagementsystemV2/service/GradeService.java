@@ -1,5 +1,6 @@
 package com.brvsk.studentmanagementsystemV2.service;
 
+import com.brvsk.studentmanagementsystemV2.email.EmailSender;
 import com.brvsk.studentmanagementsystemV2.exception.BadRequestException;
 import com.brvsk.studentmanagementsystemV2.exception.notFound.ExamNotFoundException;
 import com.brvsk.studentmanagementsystemV2.exception.notFound.NotFoundException;
@@ -26,6 +27,7 @@ public class GradeService {
     private final StudentRepository studentRepository;
     private final ExamRepository examRepository;
     private final GradeMapper gradeMapper;
+    private final EmailSender emailSender;
 
     public void addGrade(GradeRequest gradeRequest){
 
@@ -41,14 +43,18 @@ public class GradeService {
         if (studentGroupId != examGroupId){
             throw new BadRequestException("The student did not write this exam");
         }
-
-
-
         Grade newGrade = toEntity(gradeRequest);
 
         newGrade.setExam(exam);
         newGrade.setStudent(student);
         gradeRepository.save(newGrade);
+
+        emailSender.send(
+                student.getEmail(),
+                "New grade for " + exam.getName() + " exam",
+                buildGradeInfoEmail(student.getFirstName())
+        );
+
     }
 
     public List<GradeDto> getAllGrades(){
@@ -64,4 +70,11 @@ public class GradeService {
                 .value(gradeRequest.getValue())
                 .build();
     }
+
+    private String buildGradeInfoEmail(String studentName) {
+        return "Hello " + studentName +
+                " \n The teacher wrote a new grade in the student-management-system application";
+    }
+
+
 }
