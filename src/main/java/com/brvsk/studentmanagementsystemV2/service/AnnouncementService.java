@@ -15,6 +15,7 @@ import com.brvsk.studentmanagementsystemV2.model.request.AnnouncementRequest;
 import com.brvsk.studentmanagementsystemV2.repository.AnnouncementRepository;
 import com.brvsk.studentmanagementsystemV2.repository.CourseRepository;
 import com.brvsk.studentmanagementsystemV2.repository.TeacherRepository;
+import com.brvsk.studentmanagementsystemV2.utils.AnnouncementComparator;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,14 +64,16 @@ public class AnnouncementService {
         Course course = courseRepository.findById(courseId)
                 .orElseThrow(() -> new CourseNotFoundException(courseId));
 
-        return course.getAnnouncements()
-                        .stream()
+        List<Announcement> announcementList = course.getAnnouncements();
+        announcementList.sort(new AnnouncementComparator());
+
+        return  announcementList.stream()
                         .map(announcementMapper::toDto)
-                        .sorted(Comparator.comparing(a -> {
-                            if (isAnnouncementImportant(a.getAnnouncementType())){
-                                return  0;
-                            } else return 1;
-                        }))
+//                        .sorted(Comparator.comparing(a -> {
+//                            if (isAnnouncementImportant(a.getAnnouncementType())){
+//                                return  0;
+//                            } else return 1;
+//                        }))
                         .toList();
 
     }
