@@ -69,11 +69,6 @@ public class AnnouncementService {
 
         return  announcementList.stream()
                         .map(announcementMapper::toDto)
-//                        .sorted(Comparator.comparing(a -> {
-//                            if (isAnnouncementImportant(a.getAnnouncementType())){
-//                                return  0;
-//                            } else return 1;
-//                        }))
                         .toList();
 
     }
