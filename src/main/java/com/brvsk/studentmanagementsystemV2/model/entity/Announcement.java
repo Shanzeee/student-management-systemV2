@@ -18,7 +18,7 @@ import java.util.Comparator;
 @AllArgsConstructor
 @Entity(name = "Announcement")
 @Table(name = "announcement")
-public class Announcement implements Comparator<Announcement> {
+public class Announcement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,19 +41,4 @@ public class Announcement implements Comparator<Announcement> {
     @CreationTimestamp
     private LocalDateTime postedAt;
 
-    @Override
-    public int compare(Announcement a1, Announcement a2) {
-        if (isAnnouncementImportant(a1.getAnnouncementType()) && !isAnnouncementImportant(a2.getAnnouncementType())){
-            return -1;
-        } else if (!isAnnouncementImportant(a1.getAnnouncementType()) && isAnnouncementImportant(a2.getAnnouncementType())){
-            return 1;
-        }
-        return a1.getPostedAt().compareTo(a2.getPostedAt());
-    }
-
-    private boolean isAnnouncementImportant(AnnouncementType announcementType){
-        return announcementType.equals(AnnouncementType.IMPORTANT_INFO) ||
-                announcementType.equals(AnnouncementType.RESCHEDULING) ||
-                announcementType.equals(AnnouncementType.EXAM);
-    }
 }
