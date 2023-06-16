@@ -1,6 +1,6 @@
 package com.brvsk.studentmanagementsystemV2.controller;
 
-import com.brvsk.studentmanagementsystemV2.model.dto.ExamDto;
+import com.brvsk.studentmanagementsystemV2.model.dto.StudentDto;
 import com.brvsk.studentmanagementsystemV2.model.request.ExamRequest;
 import com.brvsk.studentmanagementsystemV2.service.ExamService;
 import lombok.AllArgsConstructor;
@@ -21,8 +21,8 @@ public class ExamController {
         examService.addExam(examRequest);
     }
 
-    @GetMapping
-    public List<ExamDto> getAllExams(){
-        return examService.getAllExams();
+    @GetMapping("/{examId}/students")
+    public List<StudentDto> getExamStudents(@PathVariable Long examId) {
+        return examService.getExamStudents(examId);
     }
 }

@@ -3,7 +3,6 @@ package com.brvsk.studentmanagementsystemV2.controller;
 import com.brvsk.studentmanagementsystemV2.model.dto.CourseDto;
 import com.brvsk.studentmanagementsystemV2.model.dto.GroupDto;
 import com.brvsk.studentmanagementsystemV2.model.dto.StudentDto;
-import com.brvsk.studentmanagementsystemV2.model.entity.Group;
 import com.brvsk.studentmanagementsystemV2.model.request.GroupRequest;
 import com.brvsk.studentmanagementsystemV2.service.CourseService;
 import com.brvsk.studentmanagementsystemV2.service.GroupService;
@@ -33,11 +32,6 @@ public class GroupController {
     public ResponseEntity<String> createNewGroup(@Valid @RequestBody GroupRequest groupRequest){
         groupService.addGroup(groupRequest);
         return new ResponseEntity<>("A new group " +groupRequest.getGroupName()+ " has been added", HttpStatus.CREATED);
-    }
-
-    @DeleteMapping(path = "{groupId}")
-    public void deleteGroup(@PathVariable("groupId") Long groupId){
-        groupService.deleteGroup(groupId);
     }
 
     @GetMapping

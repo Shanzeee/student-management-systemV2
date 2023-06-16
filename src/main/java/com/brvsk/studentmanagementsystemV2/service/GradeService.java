@@ -2,22 +2,21 @@ package com.brvsk.studentmanagementsystemV2.service;
 
 import com.brvsk.studentmanagementsystemV2.email.EmailSender;
 import com.brvsk.studentmanagementsystemV2.exception.BadRequestException;
+import com.brvsk.studentmanagementsystemV2.exception.notFound.CourseNotFoundException;
 import com.brvsk.studentmanagementsystemV2.exception.notFound.ExamNotFoundException;
-import com.brvsk.studentmanagementsystemV2.exception.notFound.NotFoundException;
 import com.brvsk.studentmanagementsystemV2.exception.notFound.StudentNotFoundException;
 import com.brvsk.studentmanagementsystemV2.mapper.GradeMapper;
-import com.brvsk.studentmanagementsystemV2.model.dto.GradeDto;
+import com.brvsk.studentmanagementsystemV2.model.dto.StudentCourseInfoDto;
 import com.brvsk.studentmanagementsystemV2.model.entity.Exam;
+import com.brvsk.studentmanagementsystemV2.model.entity.FinalGrade;
 import com.brvsk.studentmanagementsystemV2.model.entity.Grade;
 import com.brvsk.studentmanagementsystemV2.model.entity.Student;
 import com.brvsk.studentmanagementsystemV2.model.request.GradeRequest;
 import com.brvsk.studentmanagementsystemV2.repository.*;
-import jdk.dynalink.linker.LinkerServices;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -28,6 +27,8 @@ public class GradeService {
     private final ExamRepository examRepository;
     private final GradeMapper gradeMapper;
     private final EmailSender emailSender;
+    private final CourseRepository courseRepository;
+    private final FinalGradeRepository finalGradeRepository;
 
     public void addGrade(GradeRequest gradeRequest){
 
@@ -57,12 +58,26 @@ public class GradeService {
 
     }
 
-    public List<GradeDto> getAllGrades(){
-        return gradeRepository
-                .findAll()
+    public StudentCourseInfoDto getStudentCourseInfo(Long studentId, Long courseId){
+        studentRepository.findById(studentId)
+                .orElseThrow(() -> new StudentNotFoundException(studentId));
+        courseRepository.findById(courseId)
+                .orElseThrow(() -> new CourseNotFoundException(courseId));
+
+        FinalGrade finalGrade = finalGradeRepository.findByStudentIdAndCourseId(studentId, courseId);
+        double finalGradeValue = 0.0;
+        if (finalGrade.getValue() != null){
+            finalGradeValue = finalGrade.getValue();
+        }
+
+        List<Double> studentGrades = gradeRepository.findAllByStudentIdAndExam_Course_Id(studentId, courseId)
                 .stream()
-                .map(gradeMapper::toDto)
+                .map(Grade::getValue)
                 .toList();
+        return StudentCourseInfoDto.builder()
+                .grades(studentGrades)
+                .finalGrade(finalGradeValue)
+                .build();
     }
 
     private Grade toEntity (GradeRequest gradeRequest){

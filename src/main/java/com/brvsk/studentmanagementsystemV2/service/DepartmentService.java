@@ -2,10 +2,16 @@ package com.brvsk.studentmanagementsystemV2.service;
 
 import com.brvsk.studentmanagementsystemV2.exception.BadRequestException;
 import com.brvsk.studentmanagementsystemV2.mapper.DepartmentMapper;
+import com.brvsk.studentmanagementsystemV2.mapper.GroupMapper;
+import com.brvsk.studentmanagementsystemV2.mapper.StudentMapper;
 import com.brvsk.studentmanagementsystemV2.model.dto.DepartmentDto;
+import com.brvsk.studentmanagementsystemV2.model.dto.GroupDto;
+import com.brvsk.studentmanagementsystemV2.model.dto.StudentDto;
 import com.brvsk.studentmanagementsystemV2.model.entity.Department;
 import com.brvsk.studentmanagementsystemV2.model.request.DepartmentRequest;
 import com.brvsk.studentmanagementsystemV2.repository.DepartmentRepository;
+import com.brvsk.studentmanagementsystemV2.repository.GroupRepository;
+import com.brvsk.studentmanagementsystemV2.repository.StudentRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +24,10 @@ public class DepartmentService {
 
     private final DepartmentRepository departmentRepository;
     private final DepartmentMapper departmentMapper;
+    private final GroupRepository groupRepository;
+    private final GroupMapper groupMapper;
+    private final StudentRepository studentRepository;
+    private final StudentMapper studentMapper;
 
     public void addDepartment(DepartmentRequest departmentRequest){
         if(departmentRepository.existsByName(departmentRequest.getName())){
@@ -38,6 +48,20 @@ public class DepartmentService {
                 .stream()
                 .map(departmentMapper::toDto)
                 .collect(Collectors.toList());
+    }
+
+    public List<GroupDto> getGroupsForDepartment(Long departmentId){
+        return groupRepository.findAllByDepartment_Id(departmentId)
+                .stream()
+                .map(groupMapper::toDto)
+                .toList();
+    }
+
+    public List<StudentDto> getStudentsForDepartment(Long departmentId){
+        return studentRepository.findAllByGroupDepartment_Id(departmentId)
+                .stream()
+                .map(studentMapper::toDto)
+                .toList();
     }
 
     public List<Department> getAllDepartments() {
